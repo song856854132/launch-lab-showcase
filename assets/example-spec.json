@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "title": "Shortline — Showcase",
+    "team": "Shortline · Innovation Team",
+    "event": "Launch Lab Showcase · Fall 2026"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "Track One · Innovation Team",
+      "title": "Shortline",
+      "subtitle": "Live wait-time predictions for campus dining halls, from Wi-Fi occupancy counts",
+      "byline": "Ana Ruiz · Wei Chen · Sam Okafor — Fall 2026",
+      "notes": "Open with the one-liner, then go straight to the problem. 20 seconds."
+    },
+    {
+      "type": "statement",
+      "eyebrow": "The problem",
+      "title": "Students lose 20+ minutes a day guessing which dining hall is quiet",
+      "body": "Today the workaround is walking over and looking. Our intake survey (n=64) found 71% had left a line without eating at least once this term.",
+      "notes": "Cite the survey size. Judges will ask how the 64 were recruited: dorm group chats, so skewed to first-years."
+    },
+    {
+      "type": "architecture",
+      "eyebrow": "What we built",
+      "title": "From access-point counts to a 15-minute forecast",
+      "layers": [
+        { "label": "Ingest", "nodes": [
+          { "name": "AP occupancy feed", "detail": "5-min counts, 3 halls", "status": "built" },
+          { "name": "Menu scraper", "detail": "daily, nightly cron", "status": "built" },
+          { "name": "Card-swipe data", "detail": "awaiting approval", "status": "stub" }
+        ]},
+        { "label": "Model", "nodes": [
+          { "name": "Feature store", "detail": "Postgres + Timescale", "status": "built" },
+          { "name": "Gradient-boosted forecaster", "detail": "15 / 30 min horizons", "status": "partial" }
+        ]},
+        { "label": "Serve", "nodes": [
+          { "name": "FastAPI service", "detail": "p95 120 ms", "status": "built" },
+          { "name": "iOS widget", "detail": "TestFlight, 41 users", "status": "partial" },
+          { "name": "Push alerts", "detail": "planned", "status": "stub" }
+        ]}
+      ],
+      "caption": "Everything solid black runs in the demo today. Dashed boxes are not built yet and are not shown.",
+      "notes": "Point at the dashed boxes yourself before a judge does."
+    },
+    {
+      "type": "compare",
+      "eyebrow": "Key technical decision",
+      "title": "Why gradient boosting instead of an LSTM",
+      "left": { "label": "Considered", "title": "LSTM sequence model", "points": ["Needs months of history we don't have", "Harder to explain a bad forecast", "GPU for training"] },
+      "right": { "label": "Chose", "title": "LightGBM on lag features", "points": ["Trains in 40 s on a laptop", "Feature importances explain misses", "Beat LSTM baseline on our 6-week holdout"] },
+      "verdict": "Revisit sequence models once a full semester of data exists."
+    },
+    {
+      "type": "demo",
+      "title": "Pick a hall at 11:50 on a Tuesday",
+      "steps": [
+        "Open the widget: three halls, current wait and 15-minute forecast",
+        "Replay last Tuesday's lunch rush from the recorded feed",
+        "Show the forecast catching the 12:05 spike four minutes early",
+        "Open the admin view: per-hall error over the last week"
+      ],
+      "fallback": "Recorded 90-second screen capture of the same flow, on the desktop as shortline-demo.mp4"
+    },
+    {
+      "type": "metrics",
+      "eyebrow": "Evidence",
+      "title": "How well it works today",
+      "stats": [
+        { "value": "2.8 min", "label": "Mean absolute error", "context": "15-minute horizon, 6-week holdout, 3 halls" },
+        { "value": "41", "label": "TestFlight users", "context": "19 opened it 3+ days in the final week" },
+        { "value": "120 ms", "label": "p95 API latency", "context": "k6 load test, 50 concurrent users" }
+      ],
+      "footnote": "Holdout: Oct 1 – Nov 12. Baseline (same hour last week) MAE was 5.1 min."
+    },
+    {
+      "type": "chart",
+      "eyebrow": "Evidence",
+      "title": "Forecast error by hall",
+      "chart": { "type": "bar", "categories": ["Stetson East", "Stetson West", "IV"], "series": [{ "name": "Shortline", "values": [2.4, 2.9, 3.1] }, { "name": "Same-hour baseline", "values": [4.6, 5.0, 5.7] }], "yTitle": "MAE (minutes)", "format": "0.0" },
+      "takeaway": "Roughly half the error of the naive baseline in every hall",
+      "points": ["IV is worst: one AP covers two rooms", "Events days excluded, see limits"]
+    },
+    {
+      "type": "milestones",
+      "eyebrow": "Did we hit what we set at intake?",
+      "title": "Milestones: planned vs. achieved",
+      "rows": [
+        { "milestone": "M1 · Data access", "criterion": "Live AP counts for ≥2 halls by week 4", "result": "3 halls by week 3", "status": "pass" },
+        { "milestone": "M2 · Model", "criterion": "Beat same-hour baseline MAE by 30%", "result": "45% better on holdout", "status": "pass" },
+        { "milestone": "M3 · Users", "criterion": "50 weekly active users", "result": "41 installs, 19 active", "status": "partial" },
+        { "milestone": "M4 · Swipe data", "criterion": "Dining services data agreement", "result": "Request still in review", "status": "pending" }
+      ]
+    },
+    {
+      "type": "cards",
+      "eyebrow": "Honest limits",
+      "title": "What broke, and what we learned",
+      "cards": [
+        { "eyebrow": "Broke", "title": "Event days", "body": "Career fairs and home games push error past 8 minutes. We have no event feed yet." },
+        { "eyebrow": "Broke", "title": "AP coverage", "body": "One access point covers two rooms in IV, so counts overstate the line." },
+        { "eyebrow": "Learned", "title": "Users want 'go now / wait'", "body": "Interviews (n=12) showed a number in minutes was less useful than a simple call." }
+      ]
+    },
+    {
+      "type": "team",
+      "eyebrow": "The people behind it",
+      "title": "Team and contributions",
+      "members": [
+        { "name": "Ana Ruiz", "role": "Data & ML", "built": "AP ingestion pipeline, feature store, forecaster and holdout evaluation", "skills": "Python · LightGBM · TimescaleDB" },
+        { "name": "Wei Chen", "role": "Backend", "built": "FastAPI service, load testing, CI/CD on Fly.io", "skills": "FastAPI · k6 · Docker" },
+        { "name": "Sam Okafor", "role": "iOS & research", "built": "SwiftUI widget, TestFlight rollout, 12 user interviews", "skills": "SwiftUI · user research" }
+      ],
+      "openRoles": ["iOS engineer for push alerts", "Designer, one semester"],
+      "asks": ["Intro to Dining Services data office", "Sponsor for spring pilot"]
+    },
+    {
+      "type": "closing",
+      "eyebrow": "Next semester",
+      "title": "Pilot in all 5 halls this spring",
+      "body": "Event-feed integration, push alerts, and a go-now / wait signal.",
+      "cta": "Try the TestFlight · talk to us after",
+      "contacts": ["github.com/shortline-nu", "shortline@northeastern.edu"]
+    }
+  ]
+}
