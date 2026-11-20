@@ -44,10 +44,10 @@ Every slide accepts `notes` (speaker notes). Content slides take `eyebrow` and `
 | `cards` | optional `intro`, `cards[1–4] {eyebrow,title,body,bullets[],muted}` | `muted: true` gives a grey top edge |
 | `compare` | `left`, `right` `{label,title,points[],body}`, `verdict` | Right side is the chosen option (red edge) |
 | `architecture` | `layers[] {label, nodes[] {name, detail, status}}`, `caption` | `status`: `built` (black), `partial` (grey + red edge), `stub` (dashed). ≤4 layers, ≤4 nodes per layer |
-| `demo` | `eyebrow`, `title`, `steps[]`, `fallback` | Black slide; 3–5 steps |
+| `demo` | `eyebrow`, `title`, `steps[]`, `fallback`, `fallbackLabel` | Black slide; 3–5 steps. `fallbackLabel` defaults to "If the live demo fails" |
 | `metrics` | `stats[1–4] {value,label,context}`, `footnote` | `footnote` = method and baseline. Keep `value` short ("2.8 min") |
 | `chart` | `chart {type: bar/line, categories[], series[] {name, values[]}, yTitle, format, horizontal, min, max}`, `takeaway`, `points[]`, `footnote` | Native, editable PowerPoint chart. Bars start at 0 unless `min` is set; only zoom the axis with a stated reason |
-| `milestones` | `rows[] {milestone, criterion, result, status}` | `status`: `pass` / `fail` (criterion missed) / `stop` (team chose to stop) / `partial` / `pending`; ≤6 rows |
+| `milestones` | `rows[] {milestone, criterion, result, status}` | `status`: `pass` (PASSED, black) / `fail` (MISSED, red) / `stop` (STOPPED, dark grey; a decision, not a failure) / `partial` (PARTIAL, light grey) / `pending` (PENDING, white); ≤6 rows. Definitions in `docs/glossary.md` |
 | `team` | `members[] {name, role, built, skills}`, `openRoles[]`, `asks[]` | ≤4 members per row, two rows max. Red strip shows roles and asks |
 | `closing` | `eyebrow`, `title`, `body`, `cta`, `contacts[]` | Mirrors the cover |
 

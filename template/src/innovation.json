@@ -10,11 +10,11 @@
       "eyebrow": "Template guide · delete this slide before presenting",
       "title": "How to use this template",
       "cards": [
-        { "eyebrow": "The format", "title": "10 minutes, live demo, then Q&A", "bullets": ["About 1.5 min per slide, 2–3 min of demo", "Judges review what you built, not your idea", "Report against the milestones you set at intake"] },
+        { "eyebrow": "The format", "title": "10 minutes, live demo, then Q&A", "bullets": ["Slide timings are in the notes: about 9.5 min total", "Judges review what you built, not your idea", "Report against the milestones you set at intake"] },
         { "eyebrow": "Editing", "title": "Replace every [bracket]", "bullets": ["Delete slides you don't need", "Home > New Slide gives you the Launch Lab layouts", "Copy a card or box to add more"] },
         { "eyebrow": "Rules", "title": "Plain words, real numbers", "bullets": ["Every number gets its method and baseline", "Say what is stubbed before a judge asks", "Name who built what"] }
       ],
-      "notes": "This slide is only for your team. Delete it before the showcase. Full guide: template/README.md in the launch-lab-showcase repository."
+      "notes": "This slide is only for your team. Delete it before the showcase. Full guide, including why each slide exists and how to adapt it: template/README.md in the launch-lab-showcase repository."
     },
     {
       "type": "cover",
@@ -76,7 +76,7 @@
       "title": "[What the numbers say, as a sentence]",
       "stats": [
         { "value": "[0.0]", "label": "[Performance metric]", "context": "[dataset · n · conditions]" },
-        { "value": "[00]", "label": "[Usage metric]", "context": "[who · over what period]" },
+        { "value": "[00]", "label": "[Usage or validation metric]", "context": "[who · over what period, or what you tested if no users yet]" },
         { "value": "[000]", "label": "[Engineering metric, unit]", "context": "[how measured]" }
       ],
       "footnote": "[Method and baseline: how each number was measured and what you compare it to]",
@@ -92,7 +92,7 @@
         { "milestone": "[M3 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "fail" },
         { "milestone": "[M4 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "pending" }
       ],
-      "notes": "0:45. Copy criteria word for word from your intake proposal. Status cells: PASSED (black), MISSED or STOPPED (red), PARTIAL (grey), PENDING (white). A missed milestone told honestly is a finding."
+      "notes": "0:45. Copy criteria word for word from your intake proposal. Status cells: PASSED = met; MISSED = tried, not met; STOPPED = you chose to end it (grey, because it is a decision, not a failure); PARTIAL = partly met; PENDING = waiting on something outside your control. Copy a cell of the right color. No pass criterion at intake? Write your original goal and mark it \"criterion added for review\". A missed milestone told honestly is a finding."
     },
     {
       "type": "cards",

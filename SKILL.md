@@ -1,6 +1,6 @@
 ---
 name: launch-lab-showcase
-description: Prepare a NU / Khoury Launch Lab team for its end-of-semester showcase (final review) - pressure-test the project on technical depth and evidence, then build a ~10-minute live-demo pitch deck as a .pptx in the Launch Labs visual style (black header band, red rule, red diamond bullets), with speaker notes, a demo run-sheet and judge Q&A prep. Use whenever a Launch Lab Innovation Team or Research Team mentions the showcase, demo day, final review, final presentation or pitch deck, or asks to turn their semester's work into slides, even without the words "Launch Lab".
+description: Prepare a NU / Khoury Launch Lab team for its end-of-semester showcase (final review) - pressure-test the project on technical depth and evidence, then build a ~10-minute live-demo showcase deck as a .pptx in the Launch Labs visual style (black header band, red rule, red diamond bullets), with speaker notes, a demo run-sheet and judge Q&A prep. Use whenever a Launch Lab Innovation Team or Research Team mentions the showcase, demo day, final review, final presentation or pitch deck, or asks to turn their semester's work into slides, even without the words "Launch Lab".
 ---
 
 # Launch Lab Showcase Builder
@@ -9,17 +9,17 @@ Helps one Launch Lab project team turn a semester of work into a showcase presen
 
 ## Why this is not a YC pitch
 
-Launch Lab is a graduate-student project club at Northeastern's Khoury College. It runs like a research lab (fixed semester cycle, outside critique, milestones with pass/stop criteria set at intake) and is funded like a two-sided platform: faculty, sponsors and recruiters come to meet capable people doing structured work. **The project is the vehicle; the people are the product.** The showcase is the end of that loop, so it differs from a startup pitch in three ways:
+Launch Lab is a graduate-student project club at Northeastern's Khoury College. Teams run one-semester projects on a fixed cycle, with milestones and pass criteria set at intake. At the showcase, faculty judge the work, and sponsors and recruiters come to meet the people who did it. The showcase is the end of that cycle, so it differs from a startup pitch in three ways:
 
 1. **It is a final review, not idea screening.** Judges already accepted the idea at intake. Now they want to know what was built, how it works, whether it works, and whether the team hit the milestones it set. Architecture, evidence and honest limits get the most time. Market sizing (TAM/SAM/SOM) mostly drops out.
-2. **The deck closes the intake loop.** Each team entered with a one-page proposal: *Project* (problem, prior work, approach, scope, risks), *Resources* (data, compute, credits, sponsors, mentors), *Milestones* (with pass/stop criteria), *Team* (members, skill gaps, open roles). The showcase reports against it, milestone by milestone.
-3. **Talent is half the point.** The audience is faculty and judges (rigor), sponsors and recruiters (who is good, and at what), and students (what's possible, and maybe joining). Every deck ends with who built which part, the skills that proved, open roles, and specific asks.
+2. **The deck closes the intake loop.** Each team entered with a one-page proposal: *Project* (problem, prior work, approach, scope, risks), *Resources* (data, compute, credits, sponsors, mentors), *Milestones* (with pass criteria), *Team* (members, skill gaps, open roles). The showcase reports against it, milestone by milestone.
+3. **The people matter as much as the project.** The audience is faculty and judges (rigor), sponsors and recruiters (who is good, and at what), and students (what's possible, and maybe joining). Every deck ends with who built which part, the skills that proved, open roles, and specific asks.
 
 A stopped milestone or a negative result is a valid showcase outcome. Present it as a finding. Hiding it is what loses credibility.
 
 ## Format defaults
 
-- **Slot:** about 10 minutes including a live demo, then Q&A. Aim for 10–12 slides: about 6–7 minutes of slides and 2–3 minutes of demo.
+- **Slot:** about 10 minutes including a demo or walkthrough, then Q&A. 10–12 slides; the per-slide timings in `references/tracks.md` add up to about 9.5 minutes.
 - **Output:** a `.pptx` built with `scripts/build_deck.js` in the Launch Labs visual system (see `references/design-system.md`). Don't fall back to a generic template or a default theme; the shared look is what makes the showcase feel like one event.
 - **Language:** match the team's language for the conversation; the deck is in English unless they say otherwise.
 
@@ -40,7 +40,7 @@ If the team has little written down, work from a 3–5 sentence description and 
 Before writing slides, sort what the team has into a working list:
 - **Working / partial / stubbed:** each component, honestly labelled. This feeds the architecture slide, which shows all three states.
 - **Measurements:** every number, with how it was measured (dataset, n, baseline, date range). A number without a method goes on the slide only with its caveat.
-- **Milestones:** each intake milestone, its pass criterion, what happened, and a status of pass / fail / stop / partial / pending.
+- **Milestones:** each intake milestone, its pass criterion, what happened, and a status of passed / missed / stopped / partial / pending (definitions in `docs/glossary.md`).
 - **What broke:** failures, surprises and limits.
 
 Never fabricate metrics, users, results or quotes. Any number you can't trace to the team goes in as `[TBD]` and is flagged in your reply.
@@ -70,12 +70,12 @@ Before building, run the technical review in `references/judge-questions.md` aga
 
 ## Teams that don't want AI
 
-Point them to the fill-in templates in `template/` (Innovation and Research .pptx, PDF previews, and `template/README.md` with the guide and checklist). They follow the same spines and style as this skill. If you change a spine or the style, regenerate the templates from `template/src/*.json` so the two stay in step.
+Point them to the fill-in templates in `template/` (Innovation and Research .pptx, PDF previews, and `template/README.md`, the team guide with per-slide reasoning, adapting rules and checklist). Judges and officers have their own page: `docs/for-officers-and-judges.md`. They follow the same spines and style as this skill. If you change a spine or the style, regenerate the templates from `template/src/*.json` so the two stay in step.
 
 ## Writing the slides
 
 - **Titles say the point**, not the topic: "Forecast error is half the baseline in every hall", not "Results".
-- **One message per slide.** About 1.5 minutes per slide in a 10-minute slot.
+- **One message per slide.** Follow the per-slide timings in `references/tracks.md`.
 - **Plain, literal language.** "Predicts dining-hall waits from Wi-Fi counts" beats "AI-powered campus intelligence platform." This rule carries over from YC because it works.
 - **Show the mechanism.** For a technical audience, an architecture or pipeline diagram plus one key design decision (with the alternative you rejected and why) does more than any adjective.
 - **Every number has a source line** (n, dataset, baseline, period) in the slide footnote or notes.

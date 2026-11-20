@@ -298,7 +298,7 @@ R.demo = (pres, slide, meta, s) => {
     const y = H - 0.45 - fbH;
     slide.addShape(pres.shapes.RECTANGLE, { x: MX, y, w: CW, h: fbH - 0.15, fill: { color: "1E1C1F" }, line: { color: "3A383C", width: 1 } });
     T(slide, [
-      { text: "IF THE LIVE DEMO FAILS   ", options: { bold: true, color: C.red, charSpacing: 2, fontSize: 11 } },
+      { text: (s.fallbackLabel || "If the live demo fails").toUpperCase() + "   ", options: { bold: true, color: C.red, charSpacing: 2, fontSize: 11 } },
       { text: s.fallback, options: { color: "CFCED3", fontSize: 14 } },
     ], { x: MX + 0.3, y, w: CW - 0.6, h: fbH - 0.15, valign: "middle" });
   }
@@ -358,7 +358,7 @@ R.milestones = (pres, slide, meta, s, idx) => {
   const f = contentFrame(pres, slide, meta, s, idx);
   const ST = {
     pass: { t: "PASSED", fill: C.black, color: C.white },
-    stop: { t: "STOPPED", fill: C.red, color: C.white },
+    stop: { t: "STOPPED", fill: C.muted, color: C.white }, // a decision, not a failure: grey, not red
     fail: { t: "MISSED", fill: C.red, color: C.white },
     partial: { t: "PARTIAL", fill: "E4E3E8", color: C.black },
     pending: { t: "PENDING", fill: C.white, color: C.muted },
