@@ -57,6 +57,7 @@ Before building, run the technical review in `references/judge-questions.md` aga
 
 1. Write a JSON spec (slide types and fields are in `references/design-system.md`; `assets/example-spec.json` is a complete worked example). Put the talk track for every slide in `notes`.
 2. Build it: `node <skill-dir>/scripts/build_deck.js spec.json <team>-showcase.pptx`. It needs `pptxgenjs` (`npm install pptxgenjs` if `require` fails).
+   Every deck uses PowerPoint layouts named "LL …" (Cover, Title Only, Title and Content, Statement, Demo, Closing), so the team can add branded slides by hand later with Home > New Slide.
 3. Logo: the builder uses `assets/logo.png` (or `.svg`/`.jpg`) if it exists, or `meta.logo` from the spec. Otherwise it prints a text wordmark placeholder. Don't draw or recreate the Launch Labs logo; use the official file.
 4. QA: if the `pptx` skill is available, run its `validate.py` and render slides to images (its "Converting to Images" steps). Look at every slide for text overflow, overlap and leftover `[TBD]`. Fix the spec (shorter text, fewer bullets, split a slide) and rebuild. Don't hand-edit the .pptx.
 
@@ -66,6 +67,10 @@ Before building, run the technical review in `references/judge-questions.md` aga
 - A **demo run-sheet**: the exact click path, the data or account it needs, timing, and the fallback (recorded video, screenshots) if live fails.
 - **Q&A prep**: the 6–10 likeliest judge and sponsor questions, each with a 1–2 sentence answer drawn from the team's material.
 - A list of any `[TBD]` items the team must fill before the event.
+
+## Teams that don't want AI
+
+Point them to the fill-in templates in `template/` (Innovation and Research .pptx, PDF previews, and `template/README.md` with the guide and checklist). They follow the same spines and style as this skill. If you change a spine or the style, regenerate the templates from `template/src/*.json` so the two stay in step.
 
 ## Writing the slides
 

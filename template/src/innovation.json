@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "title": "Launch Lab Showcase — Innovation Team template",
+    "team": "[Team name] · Innovation Team",
+    "event": "Launch Lab Showcase · [Semester]"
+  },
+  "slides": [
+    {
+      "type": "cards",
+      "eyebrow": "Template guide · delete this slide before presenting",
+      "title": "How to use this template",
+      "cards": [
+        { "eyebrow": "The format", "title": "10 minutes, live demo, then Q&A", "bullets": ["About 1.5 min per slide, 2–3 min of demo", "Judges review what you built, not your idea", "Report against the milestones you set at intake"] },
+        { "eyebrow": "Editing", "title": "Replace every [bracket]", "bullets": ["Delete slides you don't need", "Home > New Slide gives you the Launch Lab layouts", "Copy a card or box to add more"] },
+        { "eyebrow": "Rules", "title": "Plain words, real numbers", "bullets": ["Every number gets its method and baseline", "Say what is stubbed before a judge asks", "Name who built what"] }
+      ],
+      "notes": "This slide is only for your team. Delete it before the showcase. Full guide: template/README.md in the launch-lab-showcase repository."
+    },
+    {
+      "type": "cover",
+      "eyebrow": "Track One · Innovation Team",
+      "title": "[Project name]",
+      "subtitle": "[One literal sentence: what it does, for whom. No buzzwords.]",
+      "byline": "[Name · Name · Name] — [Semester]",
+      "notes": "0:20. Say the one-liner, then move straight to the problem. Test: could a non-CS friend repeat it back?"
+    },
+    {
+      "type": "statement",
+      "eyebrow": "The problem",
+      "title": "[Who exactly has the pain, and what it costs them]",
+      "body": "[How they cope today, and how you know: interviews, survey size n, usage data]",
+      "notes": "0:45. One specific user, one specific pain. Give the evidence size (n) and how you found people, because judges will ask."
+    },
+    {
+      "type": "architecture",
+      "eyebrow": "What we built",
+      "title": "[How the system works, in one sentence]",
+      "layers": [
+        { "label": "[Input]", "nodes": [
+          { "name": "[Component]", "detail": "[tech · key fact]", "status": "built" },
+          { "name": "[Component]", "detail": "[tech · key fact]", "status": "built" },
+          { "name": "[Component]", "detail": "[not built yet]", "status": "stub" }
+        ]},
+        { "label": "[Core]", "nodes": [
+          { "name": "[Component]", "detail": "[tech · key fact]", "status": "built" },
+          { "name": "[Component]", "detail": "[partly working]", "status": "partial" }
+        ]},
+        { "label": "[Output]", "nodes": [
+          { "name": "[Component]", "detail": "[tech · key fact]", "status": "built" },
+          { "name": "[Component]", "detail": "[tech · key fact]", "status": "partial" }
+        ]}
+      ],
+      "caption": "[Which parts run in the demo today, and which are not built yet]",
+      "notes": "1:15. Black box = working, grey box with red edge = partial, dashed box = stubbed or planned. To change a box's status, copy a box of the style you want. Point at the dashed boxes yourself before a judge does."
+    },
+    {
+      "type": "compare",
+      "eyebrow": "Key technical decision",
+      "title": "[The hardest choice you made]",
+      "left": { "label": "Considered", "title": "[Option you rejected]", "points": ["[Why not: cost, data, risk]", "[Why not]", "[Why not]"] },
+      "right": { "label": "Chose", "title": "[Option you chose]", "points": ["[Evidence for it]", "[Evidence for it]", "[Evidence for it]"] },
+      "verdict": "[When you would revisit this decision]",
+      "notes": "0:45. Pick a decision where the alternative was genuinely tempting. 'We tried X first and measured Y' is the strongest form."
+    },
+    {
+      "type": "demo",
+      "eyebrow": "Live demo",
+      "title": "[The scenario: a real user doing a real task]",
+      "steps": ["[Step 1: what you click and what the audience sees]", "[Step 2]", "[Step 3: the moment that shows it works]", "[Step 4: optional]"],
+      "fallback": "[Recorded video or screenshots: file name and where it is]",
+      "notes": "2:30. Rehearse the exact click path. Use a demo account and data that can't fail. Have the recording open in another window before you start."
+    },
+    {
+      "type": "metrics",
+      "eyebrow": "Evidence",
+      "title": "[What the numbers say, as a sentence]",
+      "stats": [
+        { "value": "[0.0]", "label": "[Performance metric]", "context": "[dataset · n · conditions]" },
+        { "value": "[00]", "label": "[Usage metric]", "context": "[who · over what period]" },
+        { "value": "[000]", "label": "[Engineering metric, unit]", "context": "[how measured]" }
+      ],
+      "footnote": "[Method and baseline: how each number was measured and what you compare it to]",
+      "notes": "1:00. No number without a method and a baseline. If a number is weak, show it anyway and explain it. Don't fill the slide with vanity numbers."
+    },
+    {
+      "type": "milestones",
+      "eyebrow": "Did we hit what we set at intake?",
+      "title": "Milestones: planned vs. achieved",
+      "rows": [
+        { "milestone": "[M1 · name]", "criterion": "[Pass criterion from your intake proposal]", "result": "[What actually happened]", "status": "pass" },
+        { "milestone": "[M2 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "partial" },
+        { "milestone": "[M3 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "fail" },
+        { "milestone": "[M4 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "pending" }
+      ],
+      "notes": "0:45. Copy criteria word for word from your intake proposal. Status cells: PASSED (black), MISSED or STOPPED (red), PARTIAL (grey), PENDING (white). A missed milestone told honestly is a finding."
+    },
+    {
+      "type": "cards",
+      "eyebrow": "Honest limits",
+      "title": "What broke, and what we learned",
+      "cards": [
+        { "eyebrow": "Broke", "title": "[Failure or limit]", "body": "[When it happens and how bad it is]" },
+        { "eyebrow": "Broke", "title": "[Failure or limit]", "body": "[When it happens and how bad it is]" },
+        { "eyebrow": "Learned", "title": "[What changed your plan]", "body": "[What users or data told you]" }
+      ],
+      "notes": "0:45. Judges trust a team that names its own weak spots."
+    },
+    {
+      "type": "team",
+      "eyebrow": "The people behind it",
+      "title": "Team and contributions",
+      "members": [
+        { "name": "[Name]", "role": "[Role]", "built": "[The parts this person built]", "skills": "[Skills · tools]" },
+        { "name": "[Name]", "role": "[Role]", "built": "[The parts this person built]", "skills": "[Skills · tools]" },
+        { "name": "[Name]", "role": "[Role]", "built": "[The parts this person built]", "skills": "[Skills · tools]" }
+      ],
+      "openRoles": ["[Role you need next]", "[Role]"],
+      "asks": ["[Specific intro, resource, or sponsor]", "[Ask]"],
+      "notes": "0:45. Recruiters and sponsors are in the room. 'Built the ingestion pipeline' tells them more than 'passionate engineer'. Asks must be answerable today."
+    },
+    {
+      "type": "closing",
+      "eyebrow": "Next semester",
+      "title": "[Next goal: continue, pivot, or stop]",
+      "body": "[What you will build next, or why you are stopping]",
+      "cta": "[What you want the audience to do]",
+      "contacts": ["[repo link]", "[team email]"],
+      "notes": "0:30. End on one clear call to action, then open for questions."
+    }
+  ]
+}

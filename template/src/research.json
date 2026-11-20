@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "title": "Launch Lab Showcase — Research Team template",
+    "team": "[Team name] · Research Team",
+    "event": "Launch Lab Showcase · [Semester]"
+  },
+  "slides": [
+    {
+      "type": "cards",
+      "eyebrow": "Template guide · delete this slide before presenting",
+      "title": "How to use this template",
+      "cards": [
+        { "eyebrow": "The format", "title": "10 min, walkthrough, Q&A", "bullets": ["About 1 min per slide, 2 min of demo", "Judges review your findings, not your idea", "Report against the milestones you set at intake"] },
+        { "eyebrow": "Editing", "title": "Replace every [bracket]", "bullets": ["Delete slides you don't need", "Home > New Slide gives you the Launch Lab layouts", "Results chart: right-click > Edit Data"] },
+        { "eyebrow": "Rules", "title": "Claims you can defend", "bullets": ["Every result gets n, baseline and variance", "Negative results are findings", "Name who ran what"] }
+      ],
+      "notes": "This slide is only for your team. Delete it before the showcase. Full guide: template/README.md in the launch-lab-showcase repository."
+    },
+    {
+      "type": "cover",
+      "eyebrow": "Track Two · Research Team",
+      "title": "[Project title]",
+      "subtitle": "[The research question in plain words]",
+      "byline": "[Name · Name · Name] — [Semester]",
+      "notes": "0:20. Say the question in one breath."
+    },
+    {
+      "type": "statement",
+      "eyebrow": "Research question",
+      "title": "[One falsifiable question]",
+      "body": "[Why it matters: who would act differently if this were answered]",
+      "notes": "0:45. A good question can come out 'no'. If no result could disappoint you, it is not a question yet."
+    },
+    {
+      "type": "cards",
+      "eyebrow": "Prior work and the gap",
+      "title": "[What is known, and what is still open]",
+      "cards": [
+        { "eyebrow": "[Approach 1]", "title": "[Closest prior work]", "body": "[What it shows · what it leaves open] [citation]" },
+        { "eyebrow": "[Approach 2]", "title": "[Closest prior work]", "body": "[What it shows · what it leaves open] [citation]" },
+        { "eyebrow": "[Approach 3]", "title": "[Closest prior work]", "body": "[What it shows · what it leaves open] [citation]" }
+      ],
+      "notes": "0:45. Three closest works, not a literature dump. Each card ends with the gap you fill."
+    },
+    {
+      "type": "bullets",
+      "eyebrow": "Hypotheses",
+      "title": "[What we expected, stated so it could fail]",
+      "bullets": ["[H1: measurable claim and threshold]", "[H2: measurable claim and threshold]", "[H3 or the cost you measured]"],
+      "aside": { "eyebrow": "Result in one line", "title": "[H1 supported, H2 rejected, …]", "body": "[One sentence on what that means]" },
+      "notes": "0:45. Give the verdict up front. The rest of the talk shows the evidence."
+    },
+    {
+      "type": "architecture",
+      "eyebrow": "Method and setup",
+      "title": "[The pipeline from data to result]",
+      "layers": [
+        { "label": "Data", "nodes": [
+          { "name": "[Dataset / source]", "detail": "[size · split]", "status": "built" },
+          { "name": "[Testbed / collection]", "detail": "[how generated]", "status": "built" }
+        ]},
+        { "label": "Method", "nodes": [
+          { "name": "[Your approach]", "detail": "[model · key setting]", "status": "built" },
+          { "name": "[Baseline]", "detail": "[what you compare to]", "status": "built" },
+          { "name": "[Variant]", "detail": "[partly done]", "status": "partial" }
+        ]},
+        { "label": "Evaluate", "nodes": [
+          { "name": "[Metric harness]", "detail": "[metrics · runs]", "status": "built" },
+          { "name": "[Planned analysis]", "detail": "[next semester]", "status": "stub" }
+        ]}
+      ],
+      "caption": "[What is complete and what is planned]",
+      "notes": "1:00. Black = done, grey with red edge = partial, dashed = planned. Copy a box of the style you want to change a status."
+    },
+    {
+      "type": "cards",
+      "eyebrow": "Data and testbed",
+      "title": "[Where the data comes from and how you kept it clean]",
+      "cards": [
+        { "eyebrow": "Source", "title": "[Dataset]", "body": "[Size, labels, license or permission]" },
+        { "eyebrow": "Testbed", "title": "[Your own data]", "body": "[How generated, size, class balance]" },
+        { "eyebrow": "Controls", "title": "Leakage and splits", "body": "[How train and test are kept apart, dedup, ethics or IRB]" }
+      ],
+      "notes": "0:30. Judges always ask about leakage and licensing. Answer it here."
+    },
+    {
+      "type": "demo",
+      "eyebrow": "Live walkthrough",
+      "title": "[One real example, end to end]",
+      "steps": ["[Step 1: input you feed in]", "[Step 2: what the method produces]", "[Step 3: compare with the baseline]", "[Step 4: one failure case]"],
+      "fallback": "[Recorded run or screenshots: file name and where it is]",
+      "notes": "2:00. Showing one failure case builds more trust than three successes."
+    },
+    {
+      "type": "chart",
+      "eyebrow": "Results",
+      "title": "[The headline result as a sentence]",
+      "chart": { "type": "bar", "categories": ["[Condition A]", "[Condition B]"], "series": [{ "name": "[Your method]", "values": [0.8, 0.7] }, { "name": "[Baseline]", "values": [0.75, 0.72] }], "yTitle": "[Metric]", "format": "0.00" },
+      "takeaway": "[What the chart shows]",
+      "points": ["[Notable pattern]", "[Caveat]"],
+      "footnote": "[n per condition · runs · variance or CI · dataset split] (sample values: replace via right-click > Edit Data)",
+      "notes": "1:15. The chart has sample values. Right-click it > Edit Data to enter yours. Bars start at zero so differences are not exaggerated."
+    },
+    {
+      "type": "cards",
+      "eyebrow": "Threats to validity",
+      "title": "What didn't work, and what could make us wrong",
+      "cards": [
+        { "eyebrow": "Negative result", "title": "[What didn't work]", "body": "[By how much, and the likely reason]" },
+        { "eyebrow": "Threat", "title": "[Validity threat]", "body": "[Small n, one dataset, leakage risk, …]" },
+        { "eyebrow": "Threat", "title": "[Validity threat]", "body": "[What would change the conclusion]" }
+      ],
+      "notes": "0:45. Say these before the judges do."
+    },
+    {
+      "type": "milestones",
+      "eyebrow": "Did we hit what we set at intake?",
+      "title": "Milestones: planned vs. achieved",
+      "rows": [
+        { "milestone": "[M1 · name]", "criterion": "[Pass criterion from your intake proposal]", "result": "[What happened]", "status": "pass" },
+        { "milestone": "[M2 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "pass" },
+        { "milestone": "[M3 · name]", "criterion": "[Pass criterion]", "result": "[What happened]", "status": "fail" }
+      ],
+      "notes": "0:30. Copy criteria word for word from your intake proposal. Status: PASSED, MISSED, STOPPED, PARTIAL, PENDING."
+    },
+    {
+      "type": "team",
+      "eyebrow": "The people behind it",
+      "title": "Who ran what",
+      "members": [
+        { "name": "[Name]", "role": "[Role]", "built": "[Experiments, pipeline, or analysis this person owned]", "skills": "[Skills · tools]" },
+        { "name": "[Name]", "role": "[Role]", "built": "[What this person owned]", "skills": "[Skills · tools]" },
+        { "name": "[Name]", "role": "[Role]", "built": "[What this person owned]", "skills": "[Skills · tools]" }
+      ],
+      "openRoles": ["[Role you need next]"],
+      "asks": ["[Specific ask: mentor, data, compute]", "[Ask]"],
+      "notes": "0:30. Asks must be specific: '200 A100 GPU-hours', not 'compute'."
+    },
+    {
+      "type": "closing",
+      "eyebrow": "Contribution and next steps",
+      "title": "[What this adds, and what is next]",
+      "body": "[Paper, dataset or tool release, next-semester plan, or why you are stopping]",
+      "cta": "[What you want the audience to do]",
+      "contacts": ["[repo link]", "[team email]"],
+      "notes": "0:30. End on the contribution, then open for questions."
+    }
+  ]
+}

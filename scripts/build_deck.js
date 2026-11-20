@@ -59,42 +59,73 @@ function cardBox(pres, slide, x, y, w, h, opts = {}) {
 }
 function exists(p) { try { return p && fs.existsSync(p); } catch (e) { return false; } }
 
-// ---------- shared frames ----------
-function logo(pres, slide, meta, box, big) {
-  if (exists(meta.logo)) {
-    slide.addImage({ path: meta.logo, x: box.x, y: box.y, w: box.w, h: box.h, sizing: { type: "contain", w: box.w, h: box.h } });
-  } else {
-    // Text placeholder until the official logo file is dropped into assets/.
-    T(slide, [
-      { text: "NU ", options: { bold: true, color: C.white } },
-      { text: "LAUNCH LABS", options: { bold: true, color: C.red } },
-    ], { x: box.x, y: box.y, w: box.w, h: box.h, fontSize: big ? 26 : 12, charSpacing: big ? 4 : 2, align: big ? "center" : "left", valign: "middle" });
-  }
+// ---------- slide layouts ----------
+// The frame (header band, red rule, logo, footer, slide number) lives on PowerPoint
+// slide layouts, so anyone editing by hand gets it from Home > New Slide.
+const L = { cover: "LL Cover", closing: "LL Closing", content: "LL Title Only", bullets: "LL Title and Content", statement: "LL Statement", demo: "LL Demo" };
+
+function logoObjs(meta, box, big) {
+  if (exists(meta.logo)) return [{ image: { path: meta.logo, x: box.x, y: box.y, w: box.w, h: box.h, sizing: { type: "contain", w: box.w, h: box.h } } }];
+  // Text wordmark until the official logo file is dropped into assets/.
+  // Layout text can't mix colors in one box, so "NU" and "LAUNCH LABS" are two boxes.
+  const o = { y: box.y, h: box.h, fontFace: FONT, fontSize: big ? 26 : 12, bold: true, charSpacing: big ? 4 : 2, valign: "middle", margin: 0, align: "left" };
+  const nuW = big ? 0.8 : 0.36, restW = big ? 3.3 : 1.6;
+  const x0 = big ? box.x + (box.w - nuW - restW) / 2 : box.x;
+  return [
+    { text: { text: "NU", options: Object.assign({}, o, { x: x0, w: nuW, color: C.white }) } },
+    { text: { text: "LAUNCH LABS", options: Object.assign({}, o, { x: x0 + nuW, w: restW, color: C.red }) } },
+  ];
+}
+const rect = (x, y, w, h, color) => ({ rect: { x, y, w, h, fill: { color }, line: { color, width: 0 } } });
+const txt = (text, o) => ({ text: { text, options: Object.assign({ fontFace: FONT, margin: 0, valign: "top" }, o) } });
+const ph = (name, type, text, o) => ({ placeholder: { options: Object.assign({ name, type, fontFace: FONT, margin: 0, valign: "top" }, o), text } });
+const EYEBROW = { fontSize: 12, bold: true, color: C.red, charSpacing: 3 };
+const motto = txt("BUILD  ◆  GROW  ◆  CONNECT", { x: 0, y: 6.75, w: W, h: 0.3, fontSize: 12, bold: true, color: C.red, charSpacing: 4, align: "center" });
+
+function defineLayouts(pres, meta) {
+  const header = [
+    rect(0, 0, W, 0.62, C.black), rect(0, 0.62, W, 0.07, C.red),
+    ...logoObjs(meta, { x: MX, y: 0.11, w: 2.6, h: 0.4 }, false),
+    txt(meta.event || "Launch Lab Showcase", { x: W - MX - 5, y: 0.11, w: 5, h: 0.4, fontSize: 11, color: "A9A8AE", align: "right", valign: "middle" }),
+    txt(meta.team || "", { x: MX, y: H - 0.42, w: 6, h: 0.25, fontSize: 10, color: C.muted }),
+  ];
+  const num = (color) => ({ x: W - MX - 0.6, y: H - 0.47, w: 0.6, h: 0.3, color, fontFace: FONT, fontSize: 10, align: "right" });
+  const eyebrowPh = ph("eyebrow", "body", "SECTION LABEL", Object.assign({ x: MX, y: 0.98, w: CW, h: 0.3, align: "left" }, EYEBROW));
+  const titlePh = ph("title", "title", "Slide title that states the point", { x: MX, y: 1.3, w: CW, h: 0.95, fontSize: 28, bold: true, color: C.black, align: "left", valign: "middle" });
+
+  pres.defineSlideMaster({ title: L.content, background: { color: C.white }, objects: [...header, eyebrowPh, titlePh], slideNumber: num(C.muted) });
+  pres.defineSlideMaster({ title: L.bullets, background: { color: C.white }, slideNumber: num(C.muted), objects: [...header, eyebrowPh, titlePh,
+    ph("body", "body", "Point one\nPoint two\nPoint three", { x: MX, y: 2.45, w: CW, h: 4.3, fontSize: 20, color: C.text, align: "left", bullet: { code: "25C6", indent: 22 }, paraSpaceAfter: 10 })] });
+  pres.defineSlideMaster({ title: L.statement, background: { color: C.white }, slideNumber: num(C.muted), objects: [...header,
+    ph("eyebrow", "body", "SECTION LABEL", Object.assign({ x: MX, y: 1.5, w: CW, h: 0.35, align: "center" }, EYEBROW, { fontSize: 14 })),
+    ph("title", "title", "One big sentence: the problem or the research question", { x: MX + 0.75, y: 2.0, w: CW - 1.5, h: 2.3, fontSize: 38, bold: true, color: C.black, align: "center", valign: "middle" }),
+    ph("body", "body", "One or two sentences of evidence: who, how many, how we know", { x: MX + 1.5, y: 4.55, w: CW - 3, h: 1.6, fontSize: 18, color: C.text, align: "center" })] });
+  pres.defineSlideMaster({ title: L.cover, background: { color: C.white }, objects: [
+    rect(0, 0, W, 2.5, C.black), rect(0, 2.5, W, 0.1, C.red), ...logoObjs(meta, { x: W / 2 - 3, y: 0.65, w: 6, h: 1.2 }, true), motto,
+    ph("eyebrow", "body", "TRACK ONE · INNOVATION TEAM", Object.assign({ x: MX, y: 2.95, w: CW, h: 0.35, align: "center" }, EYEBROW, { fontSize: 15, charSpacing: 4 })),
+    ph("title", "title", "Project name", { x: MX + 0.5, y: 3.35, w: CW - 1, h: 1.35, fontSize: 46, bold: true, color: C.black, align: "center", valign: "middle" }),
+    ph("subtitle", "body", "One literal sentence: what it does, for whom", { x: MX + 1.2, y: 4.8, w: CW - 2.4, h: 0.9, fontSize: 20, color: C.text, align: "center" }),
+    ph("byline", "body", "Names · Semester", { x: MX, y: 5.85, w: CW, h: 0.4, fontSize: 14, color: C.muted, align: "center" })] });
+  pres.defineSlideMaster({ title: L.closing, background: { color: C.white }, objects: [
+    rect(0, 0, W, 2.0, C.black), rect(0, 2.0, W, 0.1, C.red), ...logoObjs(meta, { x: W / 2 - 3, y: 0.4, w: 6, h: 1.2 }, true), motto,
+    ph("eyebrow", "body", "NEXT SEMESTER", Object.assign({ x: MX, y: 2.4, w: CW, h: 0.35, align: "center" }, EYEBROW, { fontSize: 14, charSpacing: 4 })),
+    ph("title", "title", "What happens next", { x: MX + 0.5, y: 2.75, w: CW - 1, h: 1.15, fontSize: 40, bold: true, color: C.black, align: "center", valign: "middle" }),
+    ph("body", "body", "Continue, pivot, or stop, and what you need", { x: MX + 1.5, y: 3.95, w: CW - 3, h: 0.75, fontSize: 18, color: C.text, align: "center" })] });
+  pres.defineSlideMaster({ title: L.demo, background: { color: C.black }, slideNumber: num("8A898F"), objects: [
+    rect(0, H - 0.1, W, 0.1, C.red),
+    txt(meta.team || "", { x: MX, y: H - 0.45, w: 6, h: 0.25, fontSize: 10, color: "8A898F" }),
+    ph("eyebrow", "body", "LIVE DEMO", Object.assign({ x: MX, y: 0.7, w: CW, h: 0.35, align: "left" }, EYEBROW, { fontSize: 14, charSpacing: 4 })),
+    ph("title", "title", "The scenario you will show", { x: MX, y: 1.1, w: CW, h: 0.95, fontSize: 34, bold: true, color: C.white, align: "left", valign: "middle" })] });
 }
 
-function contentFrame(pres, slide, meta, s, idx) {
-  slide.background = { color: C.white };
-  slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: W, h: 0.62, fill: { color: C.black }, line: { color: C.black, width: 0 } });
-  slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0.62, w: W, h: 0.07, fill: { color: C.red }, line: { color: C.red, width: 0 } });
-  logo(pres, slide, meta, { x: MX, y: 0.11, w: 2.6, h: 0.4 }, false);
-  T(slide, meta.event || "Launch Lab Showcase", { x: W - MX - 5, y: 0.11, w: 5, h: 0.4, fontSize: 11, color: "A9A8AE", align: "right", valign: "middle" });
-  if (s.eyebrow) T(slide, String(s.eyebrow).toUpperCase(), { x: MX, y: 0.98, w: CW, h: 0.3, fontSize: 12, bold: true, color: C.red, charSpacing: 3 });
-  const tpt = fitPt(s.title, CW, 0.9, 32, 24);
-  T(slide, s.title || "", { x: MX, y: 1.3, w: CW, h: 0.9, fontSize: tpt, bold: true, color: C.black, valign: "middle" });
-  T(slide, meta.team || "", { x: MX, y: H - 0.42, w: 6, h: 0.25, fontSize: 10, color: C.muted });
-  T(slide, String(idx), { x: W - MX - 1, y: H - 0.42, w: 1, h: 0.25, fontSize: 10, color: C.muted, align: "right" });
+// Fill a layout's eyebrow + title placeholders.
+function heads(slide, s, upper = true) {
+  if (s.eyebrow) slide.addText(upper ? String(s.eyebrow).toUpperCase() : s.eyebrow, { placeholder: "eyebrow" });
+  if (s.title) slide.addText(s.title, { placeholder: "title" });
+}
+function contentFrame(pres, slide, meta, s) {
+  heads(slide, s);
   return { top: 2.4, bottom: H - 0.65 };
-}
-
-function heroFrame(pres, slide, meta, bandH) {
-  slide.background = { color: C.white };
-  slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: W, h: bandH, fill: { color: C.black }, line: { color: C.black, width: 0 } });
-  slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: bandH, w: W, h: 0.1, fill: { color: C.red }, line: { color: C.red, width: 0 } });
-  logo(pres, slide, meta, { x: W / 2 - 2, y: bandH / 2 - 0.6, w: 4, h: 1.2 }, true);
-}
-
-function footerMotto(slide, y) {
-  T(slide, "BUILD  ◆  GROW  ◆  CONNECT", { x: 0, y, w: W, h: 0.3, fontSize: 12, bold: true, color: C.red, charSpacing: 4, align: "center" });
 }
 
 // Diamond bullet list; returns the y after the list.
@@ -118,22 +149,17 @@ function bulletList(pres, slide, items, x, y, w, maxBottom, pt = 18) {
 const R = {};
 
 R.cover = (pres, slide, meta, s) => {
-  heroFrame(pres, slide, meta, 2.5);
-  if (s.eyebrow) T(slide, s.eyebrow.toUpperCase(), { x: MX, y: 2.95, w: CW, h: 0.35, fontSize: 15, bold: true, color: C.red, charSpacing: 4, align: "center" });
-  const pt = fitPt(s.title, CW - 1, 1.3, 48, 34);
-  T(slide, s.title, { x: MX + 0.5, y: 3.35, w: CW - 1, h: 1.35, fontSize: pt, bold: true, color: C.black, align: "center", valign: "middle" });
-  if (s.subtitle) T(slide, s.subtitle, { x: MX + 1.2, y: 4.8, w: CW - 2.4, h: 0.9, fontSize: fitPt(s.subtitle, CW - 2.4, 0.9, 20, 15), color: C.text, align: "center" });
-  if (s.byline) T(slide, s.byline, { x: MX, y: 5.85, w: CW, h: 0.4, fontSize: 14, color: C.muted, align: "center" });
-  footerMotto(slide, 6.75);
+  heads(slide, s);
+  if (s.subtitle) slide.addText(s.subtitle, { placeholder: "subtitle" });
+  if (s.byline) slide.addText(s.byline, { placeholder: "byline" });
 };
+R.cover.layout = L.cover;
 
-R.statement = (pres, slide, meta, s, idx) => {
-  contentFrame(pres, slide, meta, { eyebrow: null, title: "" }, idx);
-  if (s.eyebrow) T(slide, s.eyebrow.toUpperCase(), { x: MX, y: 1.5, w: CW, h: 0.35, fontSize: 14, bold: true, color: C.red, charSpacing: 4, align: "center" });
-  const pt = fitPt(s.title, CW - 1.5, 2.2, 44, 30);
-  T(slide, s.title, { x: MX + 0.75, y: 2.0, w: CW - 1.5, h: 2.3, fontSize: pt, bold: true, color: C.black, align: "center", valign: "middle" });
-  if (s.body) T(slide, s.body, { x: MX + 1.5, y: 4.55, w: CW - 3, h: 1.6, fontSize: fitPt(s.body, CW - 3, 1.6, 20, 15), color: C.text, align: "center" });
+R.statement = (pres, slide, meta, s) => {
+  heads(slide, s);
+  if (s.body) slide.addText(s.body, { placeholder: "body" });
 };
+R.statement.layout = L.statement;
 
 R.bullets = (pres, slide, meta, s, idx) => {
   const f = contentFrame(pres, slide, meta, s, idx);
@@ -257,11 +283,8 @@ R.architecture = (pres, slide, meta, s, idx) => {
   if (s.caption) T(slide, s.caption, { x: MX, y: f.bottom - capH + 0.05, w: CW, h: capH, fontSize: 12, color: C.muted, italic: true });
 };
 
-R.demo = (pres, slide, meta, s, idx) => {
-  slide.background = { color: C.black };
-  slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: H - 0.1, w: W, h: 0.1, fill: { color: C.red }, line: { color: C.red, width: 0 } });
-  T(slide, (s.eyebrow || "Live demo").toUpperCase(), { x: MX, y: 0.7, w: CW, h: 0.35, fontSize: 14, bold: true, color: C.red, charSpacing: 4 });
-  T(slide, s.title || "", { x: MX, y: 1.1, w: CW, h: 0.95, fontSize: fitPt(s.title, CW, 0.95, 38, 26), bold: true, color: C.white, valign: "middle" });
+R.demo = (pres, slide, meta, s) => {
+  heads(slide, Object.assign({ eyebrow: "Live demo" }, s));
   const steps = s.steps || [];
   const fbH = s.fallback ? 0.95 : 0;
   const top = 2.35, bottom = H - 0.6 - fbH;
@@ -279,9 +302,8 @@ R.demo = (pres, slide, meta, s, idx) => {
       { text: s.fallback, options: { color: "CFCED3", fontSize: 14 } },
     ], { x: MX + 0.3, y, w: CW - 0.6, h: fbH - 0.15, valign: "middle" });
   }
-  T(slide, meta.team || "", { x: MX, y: H - 0.45, w: 6, h: 0.25, fontSize: 10, color: "8A898F" });
-  T(slide, String(idx), { x: W - MX - 1, y: H - 0.45, w: 1, h: 0.25, fontSize: 10, color: "8A898F", align: "right" });
 };
+R.demo.layout = L.demo;
 
 R.metrics = (pres, slide, meta, s, idx) => {
   const f = contentFrame(pres, slide, meta, s, idx);
@@ -402,19 +424,25 @@ R.team = (pres, slide, meta, s, idx) => {
 };
 
 R.closing = (pres, slide, meta, s) => {
-  heroFrame(pres, slide, meta, 2.0);
-  if (s.eyebrow) T(slide, s.eyebrow.toUpperCase(), { x: MX, y: 2.4, w: CW, h: 0.35, fontSize: 14, bold: true, color: C.red, charSpacing: 4, align: "center" });
-  const ttl = s.title || "Thank you";
-  const tpt = fitPt(ttl, CW - 1, 1.15, 42, 28);
-  T(slide, ttl, { x: MX + 0.5, y: 2.75, w: CW - 1, h: 1.15, fontSize: tpt, bold: true, color: C.black, align: "center", valign: "middle" });
-  if (s.body) T(slide, s.body, { x: MX + 1.5, y: 3.95, w: CW - 3, h: 0.75, fontSize: fitPt(s.body, CW - 3, 0.75, 18, 14), color: C.text, align: "center" });
+  heads(slide, Object.assign({ title: "Thank you" }, s));
+  if (s.body) slide.addText(s.body, { placeholder: "body" });
   if (s.cta) {
     slide.addShape(pres.shapes.RECTANGLE, { x: MX + 1.5, y: 4.8, w: CW - 3, h: 0.8, fill: { color: C.red }, line: { color: C.red, width: 0 } });
     T(slide, s.cta + "  →", { x: MX + 1.5, y: 4.8, w: CW - 3, h: 0.8, fontSize: 20, bold: true, color: C.white, align: "center", valign: "middle" });
   }
   if (s.contacts && s.contacts.length) T(slide, s.contacts.join("     ·     "), { x: MX, y: 5.8, w: CW, h: 0.4, fontSize: 13, color: C.muted, align: "center" });
-  footerMotto(slide, 6.75);
 };
+R.closing.layout = L.closing;
+
+// pptxgenjs writes empty folder entries into the zip; OneDrive/SharePoint can refuse such files.
+async function dropFolderEntries(file) {
+  let JSZip;
+  try { JSZip = require("jszip"); } catch (e) { try { JSZip = require(require.resolve("jszip", { paths: [path.dirname(require.resolve("pptxgenjs"))] })); } catch (e2) { return; } }
+  const zip = await JSZip.loadAsync(fs.readFileSync(file));
+  // delete only the folder entries; zip.remove(folder) would also delete their contents
+  Object.keys(zip.files).filter((k) => zip.files[k].dir).forEach((k) => { delete zip.files[k]; });
+  fs.writeFileSync(file, await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
+}
 
 // ---------- main ----------
 async function main() {
@@ -433,14 +461,16 @@ async function main() {
   pres.author = meta.team || "Launch Lab team";
   pres.company = "NU Launch Labs";
   pres.theme = { headFontFace: FONT, bodyFontFace: FONT };
+  defineLayouts(pres, meta);
   (spec.slides || []).forEach((s, i) => {
     const fn = R[s.type];
     if (!fn) throw new Error(`slide ${i + 1}: unknown type "${s.type}". Known: ${Object.keys(R).join(", ")}`);
-    const slide = pres.addSlide();
+    const slide = pres.addSlide({ masterName: fn.layout || L.content });
     fn(pres, slide, meta, s, i + 1);
     if (s.notes) slide.addNotes(s.notes);
   });
   await pres.writeFile({ fileName: outPath });
+  await dropFolderEntries(outPath);
   console.log(`wrote ${outPath} (${spec.slides.length} slides)`);
 }
 main().catch((e) => { console.error(e.message); process.exit(1); });

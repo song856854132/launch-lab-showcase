@@ -53,3 +53,6 @@ Every slide accepts `notes` (speaker notes). Content slides take `eyebrow` and `
 
 ## Fitting text
 The builder shrinks text within limits (body never below 11–14 pt). If a slide still overflows in the render, the content is too long. Cut words or split the slide; don't fight the layout.
+
+## Layouts in the .pptx
+The frame lives on PowerPoint slide layouts named `LL Cover`, `LL Title Only`, `LL Title and Content`, `LL Statement`, `LL Demo` and `LL Closing`. Titles and section labels are placeholders with fixed sizes, so keep cover and closing titles to about 35 characters and content titles to two lines. The fill-in templates in `template/` are built from `template/src/*.json` with this same builder.
